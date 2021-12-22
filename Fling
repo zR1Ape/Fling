@@ -1,0 +1,57 @@
+local admins = {
+	"ZibplayRB",
+	"14kxzR1",
+	"Stonkster"
+}
+
+local function IsAdmin(plr)
+	for i,v in pairs(admins)do
+		if plr == v then
+			return true
+		end
+	end
+
+	return false
+end
+
+game.Players.PlayerAdded:Connect(function(plr)
+	plr.Chatted:Connect(function(msg)
+		local split = string.split(msg, " ")
+		
+		local message = split[1]
+		local StatedPlr = split[2]
+		
+		print(message)
+		print(StatedPlr)
+
+		if IsAdmin(plr.Name)then
+			if message == "/explode" then
+				local explosion = Instance.new("Explosion")
+				
+				local char = game.Players:FindFirstChild(StatedPlr).Character
+				print("ex")
+				if char then
+					print("explode")
+					explosion.Position = char.HumanoidRootPart.Position
+					explosion.Parent = game.Workspace
+				end
+			elseif message == "/fling" then
+				local force = Instance.new("BodyVelocity")
+				
+				local char = game.Players:FindFirstChild(StatedPlr).Character
+				
+				if char then
+					force.Velocity = Vector3.new(2000,4000,2000)
+					force.P = 10000
+					force.Parent = char.HumanoidRootPart
+					
+					task.wait(5)
+					
+					if force then
+						force:Destroy()
+					end
+				end
+			end
+		end
+	end)
+end)
